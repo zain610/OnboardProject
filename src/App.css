@@ -12,3 +12,8 @@ label {
   background: white;
   padding: 0 0.5rem !important;
 }
+.submit-btn {
+  margin: 0px !important;
+  left: 90%;
+  bottom: 20px;
+}
