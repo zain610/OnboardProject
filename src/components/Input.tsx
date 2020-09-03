@@ -6,8 +6,16 @@ type InputProps = {
   label: string;
   helper: string;
   overrideClass: string;
+  type?: string;
+  labelProps?: object;
 };
-export default ({ label, helper, overrideClass }: InputProps) => {
+export default ({
+  label,
+  helper,
+  overrideClass,
+  type = "",
+  labelProps = {},
+}: InputProps) => {
   return (
     <TextField
       id="outlined-search"
@@ -15,6 +23,8 @@ export default ({ label, helper, overrideClass }: InputProps) => {
       variant="outlined"
       helperText={helper}
       className={overrideClass}
+      type={type}
+      InputLabelProps={labelProps}
     />
   );
 };

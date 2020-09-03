@@ -5,6 +5,10 @@
 }
 .container {
   display: flex !important;
-  background: #b0eaf7;
   justify-content: flex-start;
+}
+/* Add a background color to avoid overlap of the  */
+label {
+  background: white;
+  padding: 0 0.5rem !important;
 }

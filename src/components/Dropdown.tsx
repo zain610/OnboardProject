@@ -11,17 +11,27 @@ type DropDownProps = {
   label: string;
   overrideClass: string;
   options: Array<string>;
+  helperText?: string;
+  variant?: "standard" | "outlined" | "filled" | undefined;
 };
-export default ({ label, overrideClass, options }: DropDownProps) => {
+export default ({
+  label,
+  overrideClass,
+  options,
+  helperText = "",
+  variant = "standard",
+}: DropDownProps) => {
   return (
-    <FormControl className={overrideClass}>
+    <FormControl variant={variant} className={overrideClass}>
       <InputLabel>{label}</InputLabel>
       <Select>
         {options.map((city) => (
-          <MenuItem value={city}>{city}</MenuItem>
+          <MenuItem key={city} value={city}>
+            {city}
+          </MenuItem>
         ))}
       </Select>
-      <FormHelperText>Some important helper text</FormHelperText>
+      <FormHelperText>{helperText}</FormHelperText>
     </FormControl>
   );
 };
