@@ -1,13 +1,12 @@
 import React from "react";
 import "./App.css";
-import { Container, Box, Grid } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import Input from "./components/Input";
 import Dropdown from "./components/Dropdown";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import ActionButton from "./components/Button";
 
 function App() {
-  const textClasses = "input";
   const locationOptions = [
     "Melbourne",
     "Sydney",
@@ -30,93 +29,66 @@ function App() {
         padding="1rem"
       >
         <Grid container item xs={12} spacing={3}>
-          <Grid item xs>
-            <Input
-              label="Job Title"
-              helper="E.g: Front-End Developer, Project Manager"
-            />
-          </Grid>
-          <Grid item xs>
-            <Input label="Email address" helper="E.g: Jessica@Reesby.com.au" />
-          </Grid>
-          <Grid item xs>
-            <Input label="Company" helper="E.g: Reesby, IoT, PwC" />
-          </Grid>
+          <Input
+            label="Job Title"
+            helper="E.g: Front-End Developer, Project Manager"
+          />
+          <Input label="Email address" helper="E.g: Jessica@Reesby.com.au" />
+          <Input label="Company" helper="E.g: Reesby, IoT, PwC" />
         </Grid>
 
         <Grid container item xs={12} spacing={3}>
-          <Grid item xs>
-            <Input label="Phone" helper="E.g +61 459735924" />
-          </Grid>
-          <Grid item xs>
-            <Dropdown options={locationOptions} label="Location" />
-          </Grid>
-          <Grid item xs>
-            <Input label="Contact" helper="Main contact person for the job" />
-          </Grid>
+          <Input label="Phone" helper="E.g +61 459735924" />
+          <Dropdown options={locationOptions} label="Location" />
+          <Input label="Contact" helper="Main contact person for the job" />
         </Grid>
         <Grid container item xs={12} spacing={3}>
-          <Grid item xs>
-            <Input label="Description" helper="Brief description of Job" />
-          </Grid>
+          <Input label="Description" helper="Brief description of Job" />
         </Grid>
         <Grid container item xs={12} spacing={3}>
-          <Grid item xs>
-            <Dropdown
-              label="Select"
-              options={currencyOptions}
-              helperText="Please select your currency"
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs>
-            <Input
-              label="Amount"
-              helper="Please select your expected amount"
-              labelProps={{
-                shrink: true,
-              }}
-              type="number"
-            />
-          </Grid>
-          <Grid item xs>
-            <Dropdown
-              label="Select"
-              options={rateTypes}
-              helperText="Please select your rate types"
-              variant="outlined"
-            />
-          </Grid>
-          <Grid item xs>
-            <Dropdown
-              label="Job Progress"
-              options={defaultDummyOptions}
-              variant="standard"
-            />
-          </Grid>
+          <Dropdown
+            label="Select"
+            options={currencyOptions}
+            helperText="Please select your currency"
+            variant="outlined"
+          />
+          <Input
+            label="Amount"
+            helper="Please select your expected amount"
+            labelProps={{
+              shrink: true,
+            }}
+            type="number"
+          />
+          <Dropdown
+            label="Select"
+            options={rateTypes}
+            helperText="Please select your rate types"
+            variant="outlined"
+          />
+          <Dropdown
+            label="Job Progress"
+            options={defaultDummyOptions}
+            variant="standard"
+          />
         </Grid>
         <Grid container item xs={12} spacing={3}>
-          <Grid item xs>
-            <Dropdown
-              label="Job Types"
-              options={defaultDummyOptions}
-              variant="standard"
-            />
-          </Grid>
-          <Grid item xs>
-            <Dropdown
-              label="Skills"
-              options={defaultDummyOptions}
-              variant="standard"
-            />
-          </Grid>
-          <Grid item xs>
-            <Dropdown
-              label="Industry"
-              options={defaultDummyOptions}
-              variant="standard"
-            />
-          </Grid>
+          <Dropdown
+            label="Job Types"
+            options={defaultDummyOptions}
+            variant="standard"
+          />
+          <Dropdown
+            label="Skills"
+            options={defaultDummyOptions}
+            variant="standard"
+          />
+
+          <Dropdown
+            label="Industry"
+            options={defaultDummyOptions}
+            variant="standard"
+          />
         </Grid>
         <ActionButton Icon={KeyboardArrowRightIcon} />
       </Box>
