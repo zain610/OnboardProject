@@ -9,20 +9,18 @@ import {
 
 type DropDownProps = {
   label: string;
-  overrideClass: string;
   options: Array<string>;
   helperText?: string;
   variant?: "standard" | "outlined" | "filled" | undefined;
 };
 export default ({
   label,
-  overrideClass,
   options,
   helperText = "",
   variant = "standard",
 }: DropDownProps) => {
   return (
-    <FormControl variant={variant} className={overrideClass}>
+    <FormControl variant={variant} fullWidth>
       <InputLabel>{label}</InputLabel>
       <Select>
         {options.map((city) => (
