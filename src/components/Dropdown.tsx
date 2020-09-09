@@ -13,21 +13,29 @@ type DropDownProps = {
   options: Array<string>;
   helperText?: string;
   variant?: "standard" | "outlined" | "filled" | undefined;
+  name: string;
+  value?: string;
+  handleChanges: (
+    event: React.ChangeEvent<{ name?: unknown; value: unknown }>
+  ) => void;
 };
 export default ({
   label,
   options,
   helperText = "",
   variant = "standard",
+  name,
+  value,
+  handleChanges,
 }: DropDownProps) => {
   return (
     <Grid item xs>
       <FormControl variant={variant} fullWidth>
         <InputLabel>{label}</InputLabel>
-        <Select>
-          {options.map((city) => (
-            <MenuItem key={city} value={city}>
-              {city}
+        <Select value={value} name={name} onChange={(e) => handleChanges(e)}>
+          {options.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
             </MenuItem>
           ))}
         </Select>
