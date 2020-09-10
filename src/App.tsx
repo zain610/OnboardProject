@@ -10,8 +10,6 @@ import Axios from "axios";
 
 function App() {
   const formData = {
-    jobId: "test",
-    tenantId: "reesby",
     heading: "",
     client: "",
     industry: "",
@@ -25,22 +23,23 @@ function App() {
     jobCandidateRating: "",
     jobStage: "",
     salary: "",
+    currency: "AUD",
   };
-  const [heading, setHeading] = useState("");
-  const [client, setClient] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [jobType, setJobType] = useState("");
-  const [skills, setSkills] = useState("");
-  const [description, setDescription] = useState("");
-  const [location, setLocation] = useState("");
-  const [contact, setContact] = useState("");
-  const [email, setEmail] = useState("");
-  const [phoneNo, setPhoneNo] = useState("");
-  const [jobCandidateRating, setJobCandidateRating] = useState("");
-  const [jobStage, setJobStage] = useState("");
-  const [salary, setSalary] = useState("");
+  // const [heading, setHeading] = useState("");
+  // const [client, setClient] = useState("");
+  // const [industry, setIndustry] = useState("");
+  // const [jobType, setJobType] = useState("");
+  // const [skills, setSkills] = useState("");
+  // const [description, setDescription] = useState("");
+  // const [location, setLocation] = useState("");
+  // const [contact, setContact] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [phoneNo, setPhoneNo] = useState("");
+  // const [jobCandidateRating, setJobCandidateRating] = useState("");
+  // const [jobStage, setJobStage] = useState("");
+  // const [salary, setSalary] = useState("");
   const [form, setFormData] = useState(formData);
-  const [currency, changeCurrency] = useState("AUD");
+  // const [currency, changeCurrency] = useState("AUD");
 
   const handleInputChanges = (event: React.ChangeEvent<any>) => {
     const { name, value } = event.target;
@@ -49,24 +48,50 @@ function App() {
       [name]: value,
     });
   };
-  const handleOptionSelection = (event: React.ChangeEvent<any>) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...form,
-      [name]: form.name.push(value),
-    });
-  };
 
   const handleSubmit = () => {
-    console.log(form);
     //create post request passing the form data in body.
+
+    //extract data form form state
+    const {
+      heading,
+      client,
+      industry,
+      jobType,
+      skills,
+      description,
+      location,
+      contact,
+      email,
+      phoneNo,
+      jobStage,
+      salary,
+      currency,
+    } = form;
     const headers = {
       "Content-Type": "application/json",
       accept: "*/*",
     };
+    const data = {
+      jobId: "000001",
+      tenantId: "reesby",
+      heading,
+      client,
+      industry: [industry],
+      jobType: [jobType],
+      skills: [skills],
+      description,
+      salary: `${currency} ${salary}`,
+      location: [location],
+      contact,
+      email,
+      phoneNo,
+      jobCandidateRating: "test",
+      jobStage,
+    };
     Axios.post(
       "http://javareesbyapi-env.eba-rtdeyeqd.ap-southeast-2.elasticbeanstalk.com/api/v1/job/addJob",
-      form
+      data
     )
       .then((data) => {
         console.log(data);
@@ -146,7 +171,7 @@ function App() {
         <Grid container item xs={12} spacing={3}>
           <Dropdown
             handleChanges={handleInputChanges}
-            value={currency}
+            value={form.currency}
             name="currency"
             label="Select"
             options={currencyOptions}
