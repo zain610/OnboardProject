@@ -9,11 +9,26 @@ type InputProps = {
   helper: string;
   type?: string;
   labelProps?: object;
+  name: string;
+  value?: string;
+  handleChanges: (
+    event: React.ChangeEvent<{ name?: unknown; value: unknown }>
+  ) => void;
 };
-export default ({ label, helper, type = "", labelProps = {} }: InputProps) => {
+export default ({
+  label,
+  helper,
+  type = "",
+  labelProps = {},
+  name,
+  value,
+  handleChanges,
+}: InputProps) => {
   return (
     <Grid item xs>
       <TextField
+        name={name}
+        value={value}
         id="outlined-search"
         label={label}
         variant="outlined"
@@ -21,6 +36,7 @@ export default ({ label, helper, type = "", labelProps = {} }: InputProps) => {
         type={type}
         InputLabelProps={labelProps}
         fullWidth
+        onChange={(e) => handleChanges(e)}
       />
     </Grid>
   );
