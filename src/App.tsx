@@ -9,37 +9,10 @@ import Constants from "./Constants";
 import Axios from "axios";
 
 function App() {
-  const formData = {
-    heading: "",
-    client: "",
-    industry: "",
-    jobType: "",
-    skills: "",
-    description: "",
-    location: "",
-    contact: "",
-    email: "",
-    phoneNo: "",
-    jobCandidateRating: "",
-    jobStage: "",
-    salary: "",
-    currency: "AUD",
-  };
-  // const [heading, setHeading] = useState("");
-  // const [client, setClient] = useState("");
-  // const [industry, setIndustry] = useState("");
-  // const [jobType, setJobType] = useState("");
-  // const [skills, setSkills] = useState("");
-  // const [description, setDescription] = useState("");
-  // const [location, setLocation] = useState("");
-  // const [contact, setContact] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [phoneNo, setPhoneNo] = useState("");
-  // const [jobCandidateRating, setJobCandidateRating] = useState("");
-  // const [jobStage, setJobStage] = useState("");
-  // const [salary, setSalary] = useState("");
-  const [form, setFormData] = useState(formData);
-  // const [currency, changeCurrency] = useState("AUD");
+  const [form, setFormData] = useState(Constants.defaultFormData);
+  const [errors, setErrors] = useState({
+    ...Constants.defaultFormData,
+  });
 
   const handleInputChanges = (event: React.ChangeEvent<any>) => {
     const { name, value } = event.target;
@@ -49,10 +22,45 @@ function App() {
     });
   };
 
+  const validate = () => {
+    //we will clone the current errors object, then validate all form fields and set new errors.
+    //so if the form is validated, we shoudl expect this method to return true, based on the check if all errors === ""
+
+    //input error handling
+    let temp = { ...errors };
+    temp.heading = form.heading.length > 0 ? "" : "Heading is required";
+    temp.client = form.client.length > 0 ? "" : "Client is required";
+    temp.email = /^\S+@\S+$/.test(form.email) ? "" : "Email is not valid";
+    temp.phoneNo = form.phoneNo.length > 9 ? "" : "Phone number is not valid";
+    temp.contact = form.contact.length > 0 ? "" : "Contact is required";
+    temp.description =
+      form.description.length > 0 ? "" : "Description is required";
+    temp.salary =
+      Number(form.salary) > 0 ? "" : "Salary should be greater than 0";
+    temp.location =
+      form.location.length > 0 ? "" : "Select appropriate locations";
+    temp.jobCandidateRating =
+      form.jobCandidateRating.length > 0 ? "" : "Select appropriate rating";
+    temp.jobStage = form.jobStage.length > 0 ? "" : "Select appropriate Stage";
+    temp.jobType = form.jobType.length > 0 ? "" : "Select appropriate Stage";
+    temp.currency = form.currency.length > 0 ? "" : "Select appropriate Stage";
+    temp.skills = form.skills.length > 0 ? "" : "Select appropriate skills";
+    temp.industry =
+      form.industry.length > 0 ? "" : "Select appropriate industry";
+    setErrors({
+      ...temp,
+    });
+    return Object.values(temp).every((x) => x === "");
+  };
+
   const handleSubmit = () => {
     //create post request passing the form data in body.
-
     //extract data form form state
+    if (validate()) {
+      sendFormData();
+    }
+  };
+  const sendFormData = () => {
     const {
       heading,
       client,
@@ -68,12 +76,8 @@ function App() {
       salary,
       currency,
     } = form;
-    const headers = {
-      "Content-Type": "application/json",
-      accept: "*/*",
-    };
     const data = {
-      jobId: "000001",
+      jobId: "000002",
       tenantId: "reesby",
       heading,
       client,
@@ -95,13 +99,14 @@ function App() {
     )
       .then((data) => {
         console.log(data);
+        window.alert("Form submitted!");
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        window.alert("Error submitting form");
+      });
   };
-  const locationOptions = Constants.locations;
   const defaultDummyOptions = Constants.default;
-  const currencyOptions = Constants.currency;
-  const rateTypes = Constants.rateTypes;
   return (
     <div className="App">
       <Box
@@ -119,6 +124,7 @@ function App() {
             label="Job Title"
             helper="E.g: Front-End Developer, Project Manager"
             handleChanges={handleInputChanges}
+            error={errors.heading}
           />
           <Input
             value={form.email}
@@ -126,6 +132,7 @@ function App() {
             label="Email address"
             helper="E.g: Jessica@Reesby.com.au"
             handleChanges={handleInputChanges}
+            error={errors.email}
           />
           <Input
             value={form.client}
@@ -133,6 +140,7 @@ function App() {
             label="Company"
             helper="E.g: Reesby, IoT, PwC"
             handleChanges={handleInputChanges}
+            error={errors.client}
           />
         </Grid>
 
@@ -143,13 +151,15 @@ function App() {
             name="phoneNo"
             label="Phone"
             helper="E.g +61 459735924"
+            error={errors.phoneNo}
           />
           <Dropdown
             value={form.location}
             name="location"
-            options={locationOptions}
+            options={Constants.locations}
             label="Location"
             handleChanges={handleInputChanges}
+            error={errors.location}
           />
           <Input
             value={form.contact}
@@ -157,6 +167,7 @@ function App() {
             name="contact"
             label="Contact"
             helper="Main contact person for the job"
+            error={errors.contact}
           />
         </Grid>
         <Grid container item xs={12} spacing={3}>
@@ -166,6 +177,7 @@ function App() {
             name="description"
             label="Description"
             helper="Brief description of Job"
+            error={errors.description}
           />
         </Grid>
         <Grid container item xs={12} spacing={3}>
@@ -174,9 +186,10 @@ function App() {
             value={form.currency}
             name="currency"
             label="Select"
-            options={currencyOptions}
+            options={Constants.currency}
             helperText="Please select your currency"
             variant="outlined"
+            error={errors.currency}
           />
           <Input
             handleChanges={handleInputChanges}
@@ -187,23 +200,26 @@ function App() {
               shrink: true,
             }}
             type="number"
+            error={errors.salary}
           />
           <Dropdown
             value={form.jobCandidateRating}
             handleChanges={handleInputChanges}
             name="jobCandidateRating"
             label="Select"
-            options={defaultDummyOptions}
+            options={Constants.default}
             helperText="Please select your rate types"
             variant="outlined"
+            error={errors.jobCandidateRating}
           />
           <Dropdown
             value={form.jobStage}
             handleChanges={handleInputChanges}
             name="jobStage"
             label="Job Progress"
-            options={defaultDummyOptions}
+            options={Constants.default}
             variant="standard"
+            error={errors.jobStage}
           />
         </Grid>
         <Grid container item xs={12} spacing={3}>
@@ -212,16 +228,18 @@ function App() {
             handleChanges={handleInputChanges}
             name="jobType"
             label="Job Types"
-            options={rateTypes}
+            options={Constants.rateTypes}
             variant="standard"
+            error={errors.jobType}
           />
           <Dropdown
             value={form.skills}
             handleChanges={handleInputChanges}
             name="skills"
             label="Skills"
-            options={defaultDummyOptions}
+            options={Constants.default}
             variant="standard"
+            error={errors.skills}
           />
 
           <Dropdown
@@ -229,8 +247,9 @@ function App() {
             handleChanges={handleInputChanges}
             name="industry"
             label="Industry"
-            options={defaultDummyOptions}
+            options={Constants.default}
             variant="standard"
+            error={errors.industry}
           />
         </Grid>
         <ActionButton
