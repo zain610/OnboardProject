@@ -15,6 +15,7 @@ type DropDownProps = {
   variant?: "standard" | "outlined" | "filled" | undefined;
   name: string;
   value?: string;
+  error?: any;
   handleChanges: (
     event: React.ChangeEvent<{ name?: unknown; value: unknown }>
   ) => void;
@@ -26,11 +27,12 @@ export default ({
   variant = "standard",
   name,
   value,
+  error = null,
   handleChanges,
 }: DropDownProps) => {
   return (
     <Grid item xs>
-      <FormControl variant={variant} fullWidth>
+      <FormControl variant={variant} fullWidth {...(error && { error: true })}>
         <InputLabel>{label}</InputLabel>
         <Select value={value} name={name} onChange={(e) => handleChanges(e)}>
           {options.map((option) => (

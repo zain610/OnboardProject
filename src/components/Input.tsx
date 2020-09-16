@@ -11,6 +11,7 @@ type InputProps = {
   labelProps?: object;
   name: string;
   value?: string;
+  error?: any;
   handleChanges: (
     event: React.ChangeEvent<{ name?: unknown; value: unknown }>
   ) => void;
@@ -22,8 +23,10 @@ export default ({
   labelProps = {},
   name,
   value,
+  error = null,
   handleChanges,
 }: InputProps) => {
+  console.log(error);
   return (
     <Grid item xs>
       <TextField
@@ -37,6 +40,7 @@ export default ({
         InputLabelProps={labelProps}
         fullWidth
         onChange={(e) => handleChanges(e)}
+        {...(error && { error: true })}
       />
     </Grid>
   );
