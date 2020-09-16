@@ -26,7 +26,6 @@ export default ({
   error = null,
   handleChanges,
 }: InputProps) => {
-  console.log(error);
   return (
     <Grid item xs>
       <TextField
