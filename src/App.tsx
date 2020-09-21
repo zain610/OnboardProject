@@ -13,6 +13,11 @@ function App() {
   const [errors, setErrors] = useState({
     ...Constants.defaultFormData,
   });
+  const [values, setValues] = useState([]);
+
+  const handleMultiSelect = (event: React.ChangeEvent<any>) => {
+    setValues(event.target.value);
+  };
 
   const handleInputChanges = (event: React.ChangeEvent<any>) => {
     const { name, value } = event.target;
@@ -77,7 +82,7 @@ function App() {
       currency,
     } = form;
     const data = {
-      jobId: "000002",
+      jobId: "",
       tenantId: "reesby",
       heading,
       client,
@@ -249,6 +254,17 @@ function App() {
             label="Industry"
             options={Constants.default}
             variant="standard"
+            error={errors.industry}
+          />
+
+          <Dropdown
+            value={values}
+            handleChanges={handleMultiSelect}
+            name="industry"
+            label="Industry"
+            options={Constants.default}
+            variant="standard"
+            multiple={true}
             error={errors.industry}
           />
         </Grid>

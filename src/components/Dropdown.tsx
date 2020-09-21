@@ -6,6 +6,8 @@ import {
   MenuItem,
   FormHelperText,
   Grid,
+  Checkbox,
+  ListItemText,
 } from "@material-ui/core";
 
 type DropDownProps = {
@@ -14,8 +16,9 @@ type DropDownProps = {
   helperText?: string;
   variant?: "standard" | "outlined" | "filled" | undefined;
   name: string;
-  value?: string;
+  value?: string | string[];
   error?: any;
+  multiple?: boolean;
   handleChanges: (
     event: React.ChangeEvent<{ name?: unknown; value: unknown }>
   ) => void;
@@ -28,16 +31,31 @@ export default ({
   name,
   value,
   error = null,
+  multiple = false,
   handleChanges,
 }: DropDownProps) => {
+  console.log(options);
   return (
     <Grid item xs>
       <FormControl variant={variant} fullWidth {...(error && { error: true })}>
         <InputLabel>{label}</InputLabel>
-        <Select value={value} name={name} onChange={(e) => handleChanges(e)}>
+        <Select
+          multiple={multiple}
+          value={value}
+          name={name}
+          onChange={(e) => handleChanges(e)}
+          renderValue={(selected) => (selected as string[]).join(", ")}
+        >
           {options.map((option) => (
             <MenuItem key={option} value={option}>
-              {option}
+              {multiple ? (
+                <React.Fragment>
+                  <Checkbox checked={value!.indexOf(option) > -1} />
+                  <ListItemText primary={option} />
+                </React.Fragment>
+              ) : (
+                option
+              )}
             </MenuItem>
           ))}
         </Select>
