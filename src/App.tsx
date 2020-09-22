@@ -3,22 +3,18 @@ import "./App.css";
 import { Box, Grid } from "@material-ui/core";
 import Input from "./components/Input";
 import Dropdown from "./components/Dropdown";
+import MultiDropdown from "./components/MultiDropdown";
 import KeyboardArrowRightIcon from "@material-ui/icons/KeyboardArrowRight";
 import ActionButton from "./components/Button";
 import Constants from "./Constants";
-import Axios from "axios";
+import sendFormData from "./util/api";
+import cloneObject from "./util/cloneObject";
 
 function App() {
   const [form, setFormData] = useState(Constants.defaultFormData);
   const [errors, setErrors] = useState({
-    ...Constants.defaultFormData,
+    ...cloneObject(Constants.defaultFormData),
   });
-  const [values, setValues] = useState([]);
-
-  const handleMultiSelect = (event: React.ChangeEvent<any>) => {
-    console.log(values);
-    setValues(event.target.value);
-  };
 
   const handleInputChanges = (event: React.ChangeEvent<any>) => {
     const { name, value } = event.target;
@@ -27,13 +23,14 @@ function App() {
       [name]: value,
     });
   };
-
   const validate = () => {
     //we will clone the current errors object, then validate all form fields and set new errors.
     //so if the form is validated, we shoudl expect this method to return true, based on the check if all errors === ""
 
     //input error handling
     let temp = { ...errors };
+    console.log(temp);
+    console.log(form.location);
     temp.heading = form.heading.length > 0 ? "" : "Heading is required";
     temp.client = form.client.length > 0 ? "" : "Client is required";
     temp.email = /^\S+@\S+$/.test(form.email) ? "" : "Email is not valid";
@@ -63,54 +60,9 @@ function App() {
     //create post request passing the form data in body.
     //extract data form form state
     if (validate()) {
-      sendFormData();
+      sendFormData(form);
     }
   };
-  const sendFormData = () => {
-    const {
-      heading,
-      client,
-      industry,
-      jobType,
-      skills,
-      description,
-      location,
-      contact,
-      email,
-      phoneNo,
-      jobStage,
-      salary,
-      currency,
-    } = form;
-    const data = {
-      jobId: "",
-      tenantId: "reesby",
-      heading,
-      client,
-      industry: [industry],
-      jobType: [jobType],
-      skills: [skills],
-      description,
-      salary: `${currency} ${salary}`,
-      location: [location],
-      contact,
-      email,
-      phoneNo,
-      jobCandidateRating: "test",
-      jobStage,
-    };
-    Axios.post(
-      "http://javareesbyapi-env.eba-rtdeyeqd.ap-southeast-2.elasticbeanstalk.com/api/v1/job/addJob",
-      data
-    )
-      .then((data) => {
-        window.alert("Form submitted!");
-      })
-      .catch((err) => {
-        window.alert("Error submitting form");
-      });
-  };
-  const defaultDummyOptions = Constants.default;
   return (
     <div className="App">
       <Box
@@ -157,7 +109,7 @@ function App() {
             helper="E.g +61 459735924"
             error={errors.phoneNo}
           />
-          <Dropdown
+          <MultiDropdown
             value={form.location}
             name="location"
             options={Constants.locations}
@@ -227,7 +179,7 @@ function App() {
           />
         </Grid>
         <Grid container item xs={12} spacing={3}>
-          <Dropdown
+          <MultiDropdown
             value={form.jobType}
             handleChanges={handleInputChanges}
             name="jobType"
@@ -236,7 +188,7 @@ function App() {
             variant="standard"
             error={errors.jobType}
           />
-          <Dropdown
+          <MultiDropdown
             value={form.skills}
             handleChanges={handleInputChanges}
             name="skills"
@@ -246,24 +198,13 @@ function App() {
             error={errors.skills}
           />
 
-          <Dropdown
+          <MultiDropdown
             value={form.industry}
             handleChanges={handleInputChanges}
             name="industry"
             label="Industry"
             options={Constants.default}
             variant="standard"
-            error={errors.industry}
-          />
-
-          <Dropdown
-            value={values}
-            handleChanges={handleMultiSelect}
-            name="industry"
-            label="Industry"
-            options={Constants.default}
-            variant="standard"
-            multiple={true}
             error={errors.industry}
           />
         </Grid>

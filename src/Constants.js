@@ -6,11 +6,11 @@ export default {
   defaultFormData: {
     heading: "",
     client: "",
-    industry: "",
-    jobType: "",
-    skills: "",
+    industry: [], //multi
+    jobType: [], //multi
+    skills: [], //multi
     description: "",
-    location: "",
+    location: [], //multi
     contact: "",
     email: "",
     phoneNo: "",
