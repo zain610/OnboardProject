@@ -16,6 +16,7 @@ function App() {
   const [values, setValues] = useState([]);
 
   const handleMultiSelect = (event: React.ChangeEvent<any>) => {
+    console.log(values);
     setValues(event.target.value);
   };
 
@@ -103,11 +104,9 @@ function App() {
       data
     )
       .then((data) => {
-        console.log(data);
         window.alert("Form submitted!");
       })
       .catch((err) => {
-        console.log(err);
         window.alert("Error submitting form");
       });
   };

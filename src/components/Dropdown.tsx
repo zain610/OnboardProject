@@ -8,6 +8,7 @@ import {
   Grid,
   Checkbox,
   ListItemText,
+  Input,
 } from "@material-ui/core";
 
 type DropDownProps = {
@@ -34,7 +35,6 @@ export default ({
   multiple = false,
   handleChanges,
 }: DropDownProps) => {
-  console.log(options);
   return (
     <Grid item xs>
       <FormControl variant={variant} fullWidth {...(error && { error: true })}>
@@ -44,7 +44,11 @@ export default ({
           value={value}
           name={name}
           onChange={(e) => handleChanges(e)}
-          renderValue={(selected) => (selected as string[]).join(", ")}
+          input={<Input />}
+          renderValue={(selected) => {
+            console.log(selected);
+            return (selected as string[]).join(", ");
+          }}
         >
           {options.map((option) => (
             <MenuItem key={option} value={option}>
